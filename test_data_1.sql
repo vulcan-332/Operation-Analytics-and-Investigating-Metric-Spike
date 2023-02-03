@@ -29,3 +29,23 @@ FROM
     FROM
         ops
     GROUP BY language) AS b
+    
+    
+
+/*Duplicate rows: Rows that have the same value present in them.
+Task: Let’s say you see some duplicate rows in the data. Display duplicates from the table*/
+SELECT 
+    a.language,
+    a.num AS instances,
+    IF(a.num = 1, 'Unique', 'Duplicate') AS Identifier,
+    time_taken_per_language
+FROM
+    (SELECT 
+        COUNT(*) AS num,
+            language,
+            SUM(time_spent) AS time_taken_per_language
+    FROM
+        ops
+    GROUP BY job_id , language
+    ORDER BY job_id) AS a
+ORDER BY instances DESC

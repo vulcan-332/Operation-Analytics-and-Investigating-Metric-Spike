@@ -11,6 +11,19 @@ GROUP BY ds
 ORDER BY ds
 
 
+/*Throughput: It is the no. of events happening per second.
+Task: Let’s say the above metric is called throughput. Calculate 7 day rolling average of throughput.
+*/
+
+SELECT ds, event_per_day, 
+ AVG(event_per_day)OVER(ORDER BY ds ROWS BETWEEN 6 PRECEDING AND 
+CURRENT ROW)AS 7_day_rolling_avg FROM 
+(SELECT ds, COUNT(DISTINCT event) AS event_per_day 
+FROM job_data WHERE  
+    ds BETWEEN ‘2020-11-01’ AND ‘2020-11-30’ 
+GROUP BY ds 
+ORDER BY ds)a
+
 
 /*Percentage share of each language: Share of each language for different contents.
 Task: Calculate the percentage share of each language in the last 30 days?*/
